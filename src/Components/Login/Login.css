@@ -41,7 +41,6 @@ html,
   justify-content: center;
   flex-direction: column;
   text-align: left;
-  padding-top: 50px;
 }
 
 .inner {
@@ -52,6 +51,7 @@ html,
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
   transition: all 0.3s;
+  margin-top: 80px;
 }
 
 .outer .form-control:focus {

@@ -7,7 +7,9 @@ import {
   IoQrCodeOutline,
   IoArrowForwardCircleOutline,
   IoOptionsOutline,
+  IoLogOutOutline
 } from 'react-icons/io5'
+import { Button } from 'react-bootstrap'
 
 const Home = () => {
   const [showQR, setshowQR] = useState(false)
@@ -54,13 +56,34 @@ const Home = () => {
     }
   }
 
+  const reset = () => {
+    Firebase.firestore().collection('Queues').doc(userId).update({
+      TotalT: 0,
+      CurrentT: 0,
+      Tokens: {},
+    })
+  }
+
   useEffect(() => {
     dataFetch()
   }, [])
 
   return (
-    <div className='outer'>
-      <div>
+    <>
+    <div style={{
+            backgroundColor: 'white',
+            left: '20px',
+            position: 'fixed',
+            borderRadius: '5px',
+          }}>
+        <IoLogOutOutline style={{
+                width: '50px',
+                height: '50px',
+                padding: '5px',
+                transform: 'rotateY(180deg)'
+              }} onClick={() => Firebase.auth().signOut()}>Sign out</IoLogOutOutline>
+
+        </div>
         <div
           style={{
             backgroundColor: 'white',
@@ -75,7 +98,6 @@ const Home = () => {
               style={{
                 width: '50px',
                 height: '50px',
-                left: '20px',
                 padding: '5px',
               }}
             />
@@ -91,10 +113,7 @@ const Home = () => {
             />
           )}
         </div>
-        <h1>{userId}</h1>
-
-        <button onClick={() => Firebase.auth().signOut()}>Sign out</button>
-
+    <div>
         <div className='inner'>
           {!showQR && doc && (
             <>
@@ -125,30 +144,25 @@ const Home = () => {
                   updateQueue()
                 }}
                 style={{
-                  width: '50px',
-                  height: '50px',
+                  width: '60px',
+                  height: '60px',
                   display: 'flex',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                  marginTop: '30px',
                 }}
               />
             </>
           )}
-          {showQR && <QRCode style={{}} value={userId} />}
+          <div style={{textAlign:'center'}}>
+          {showQR && <QRCode size={386} style={{}} value={userId} />}
+          </div>
         </div>
-
-        <button
-          style={{
-            display: 'block',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            marginTop: '30px',
-          }}
-        >
-          Reset Queue
-        </button>
-      </div>
+        <div style={{textAlign:'center', paddingTop:'30px'}}>
+        <Button variant="outline-danger" onClick={reset}>Reset Queue</Button>{' '}
+        </div>
     </div>
+    </>
   )
 }
 
